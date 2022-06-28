@@ -6,9 +6,9 @@ import urllib.request
 import urllib.parse
 from urllib.parse import urlparse
 
-app = Flask(__name__)
+application = Flask(__name__)
 
-model_path="./model/word2vec.gensim.model"
+model_path="/usr/share/nginx/app/model/word2vec.gensim.model"
 model = Word2Vec.load(model_path)
 
 def calc(word_list):
@@ -26,11 +26,11 @@ def calc(word_list):
         positive.append(word_list[0])
     return model.most_similar(positive=positive, negative=negative)
 
-@app.route("/", methods=["GET"])
+@application.route("/", methods=["GET"])
 def index():
     return render_template('index.html')
 
-@app.route("/data", methods=['GET', 'POST'])
+@application.route("/data", methods=['GET', 'POST'])
 def post_data():
     sentense = request.form["sentense"]
     sentense_list = sentense.split(" ")
@@ -44,7 +44,7 @@ def post_data():
         i += 1
     return result
 
-@app.route("/sweets", methods=['GET', 'POST'])
+@application.route("/sweets", methods=['GET', 'POST'])
 def sweets():
     sentense = request.form["sentense"]
     url = f'https://www.sysbird.jp/webapi/?apikey=guest&keyword={sentense}&max=10&order=r'
@@ -68,5 +68,5 @@ def sweets():
         i += 1
     return result
 
-if __name__ == "__main__":
-    app.run(port=8000)
+# if __name__ == "__main__":
+#     application.run()
